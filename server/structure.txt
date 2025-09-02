@@ -1,0 +1,39 @@
+.
+├── index.ts
+├── package-lock.json
+├── package.json
+├── src
+│   ├── index.ts
+│   ├── lib
+│   │   ├── codegen.ts
+│   │   ├── qr.ts
+│   │   └── slug.ts
+│   ├── plugins
+│   │   ├── auth.ts
+│   │   └── supabase.ts
+│   ├── routes
+│   │   ├── analytics.ts
+│   │   ├── auth.ts
+│   │   ├── branding.ts
+│   │   ├── cart.ts
+│   │   ├── checkout.ts
+│   │   ├── kds.ts
+│   │   ├── menu.ts
+│   │   ├── orders.ts
+│   │   ├── payments.ts
+│   │   ├── qr.ts
+│   │   ├── receipts.ts
+│   │   ├── staff.ts
+│   │   ├── tables.ts
+│   │   └── tenants.ts
+│   ├── services
+│   │   ├── analytics.service.ts
+│   │   ├── payments.service.ts
+│   │   └── tenant.service.ts
+│   └── types
+│       ├── fastify-aug.d.ts
+│       └── payments.d.ts
+├── structure.txt
+└── tsconfig.json
+
+7 directories, 30 files

@@ -1,0 +1,29 @@
+{
+  "name": "projectkaf-server",
+  "type": "module",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx watch --env-file=../.env src/index.ts"
+  },
+  "dependencies": {
+    "@fastify/cors": "^8.5.0",
+    "@fastify/sensible": "^5.6.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "dotenv": "^17.2.1",
+    "fastify": "^4.28.1",
+    "fastify-plugin": "^4.5.1",
+    "jose": "^5.2.4",
+    "nanoid": "^5.0.7",
+    "qrcode": "^1.5.3",
+    "uuid": "^11.1.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.11",
+    "@types/qrcode": "^1.5.5",
+    "@types/uuid": "^10.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4"
+  }
+}

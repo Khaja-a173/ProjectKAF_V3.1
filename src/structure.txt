@@ -1,0 +1,115 @@
+.
+├── App.tsx
+├── components
+│   ├── AccessControlDashboard.tsx
+│   ├── analytics
+│   │   ├── KpiCards.tsx
+│   │   ├── PaymentFunnel.tsx
+│   │   ├── PeakHours.tsx
+│   │   ├── RevenueChart.tsx
+│   │   ├── RevenueSeries.tsx
+│   │   └── TopItems.tsx
+│   ├── BrandingEditor.tsx
+│   ├── DashboardHeader.tsx
+│   ├── DynamicPageRenderer.tsx
+│   ├── Footer.tsx
+│   ├── Header.tsx
+│   ├── JoinPinModal.tsx
+│   ├── menu
+│   │   ├── BulkUploader.tsx
+│   │   ├── ItemEditor.tsx
+│   │   ├── ItemGrid.tsx
+│   │   ├── MenuFilters.tsx
+│   │   ├── SectionEditor.tsx
+│   │   └── SectionList.tsx
+│   ├── ModePrompt.tsx
+│   ├── OrderSuccessModal.tsx
+│   ├── payments
+│   │   ├── MethodPicker.tsx
+│   │   └── PayButton.tsx
+│   ├── ProtectedRoute.tsx
+│   ├── SessionCart.tsx
+│   └── TableSessionBadge.tsx
+├── context
+│   └── TenantContext.tsx
+├── contexts
+│   ├── AccessControlContext.tsx
+│   └── BrandingContext.tsx
+├── health
+│   ├── HealthBanner.tsx
+│   └── supabaseHealth.ts
+├── hooks
+│   ├── useAccessManagement.ts
+│   ├── useBrandingManagement.ts
+│   ├── useCustomization.ts
+│   ├── useMenuManagement.ts
+│   └── useSessionManagement.ts
+├── index.css
+├── lib
+│   ├── api.ts
+│   ├── authGuard.tsx
+│   ├── idempotency.ts
+│   ├── qr
+│   │   ├── sign.ts
+│   │   └── verify.ts
+│   ├── realtime.ts
+│   └── supabase.ts
+├── main.tsx
+├── pages
+│   ├── AdminPayments.tsx
+│   ├── Analytics.tsx
+│   ├── ApplicationCustomization.tsx
+│   ├── auth
+│   │   └── Callback.tsx
+│   ├── BookTable.tsx
+│   ├── Branding.tsx
+│   ├── Cart.tsx
+│   ├── Checkout 2.tsx
+│   ├── Checkout.bak.tsx
+│   ├── Checkout.tsx
+│   ├── CheckoutSuccess.tsx
+│   ├── Contact.tsx
+│   ├── CustomerMenu.tsx
+│   ├── Dashboard.tsx
+│   ├── Events.tsx
+│   ├── Gallery.tsx
+│   ├── Home.tsx
+│   ├── KDS.tsx
+│   ├── KitchenDashboard.tsx
+│   ├── LiveOrders.tsx
+│   ├── Login.tsx
+│   ├── LoginPage.tsx
+│   ├── Menu.tsx
+│   ├── MenuAdmin.tsx
+│   ├── MenuManagement.tsx
+│   ├── MenuPublic.tsx
+│   ├── OrderManagement.tsx
+│   ├── Orders.tsx
+│   ├── OrderTracking.tsx
+│   ├── Pages.tsx
+│   ├── PaymentManagement.tsx
+│   ├── PaymentSettings.tsx
+│   ├── Reserve.tsx
+│   ├── ScanEntry.tsx
+│   ├── Settings.tsx
+│   ├── Staff.tsx
+│   ├── StaffManagement.tsx
+│   ├── TableManagement.tsx
+│   ├── Tables.tsx
+│   └── TakeAway.tsx
+├── server
+│   └── routes
+│       ├── health-db.ts
+│       ├── orders.ts
+│       └── table-session.ts
+├── state
+│   └── cartStore.ts
+├── structure.txt
+├── types
+│   ├── access.ts
+│   ├── customization.ts
+│   ├── menu.ts
+│   └── session.ts
+└── vite-env.d.ts
+
+17 directories, 96 files
