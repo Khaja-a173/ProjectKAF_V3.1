@@ -1,25 +1,37 @@
+// src/main.tsx
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-// ✅ Context Providers
+import { HashRouter } from "react-router-dom";
 import { AccessControlProvider } from "@/contexts/AccessControlContext";
-import { TenantProvider } from "@/contexts/TenantContext";
+import { TenantProvider, useTenant } from "@/contexts/TenantContext";
 import { BrandingProvider } from "@/contexts/BrandingContext";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { AppLoader } from "@/components/AppLoader";
+import { useAccessControl } from "@/contexts/AccessControlContext";
 
-// ✅ Strict mode enabled for stability and debugging
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+function BrandingWithTenant({ children }: { children: React.ReactNode }) {
+  const { currentUser } = useAccessControl();
+  const tenantId = currentUser?.tenantId ?? "";
+  return <BrandingProvider tenantId={tenantId}>{children}</BrandingProvider>;
+}
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    {/* 🔹 AccessControlProvider → fetches /auth/whoami */}
-    <AccessControlProvider>
-      {/* 🔹 TenantProvider → exposes tenantId derived from currentUser */}
-      <TenantProvider>
-        {/* 🔹 BrandingProvider → MUST receive tenantId for correct logos, theme, etc */}
-        <BrandingProvider tenantId="">
-          <App />
-        </BrandingProvider>
-      </TenantProvider>
-    </AccessControlProvider>
+    <ErrorBoundary>
+      <AccessControlProvider>
+        <TenantProvider>
+          <BrandingWithTenant>
+            <HashRouter>
+              <React.Suspense fallback={<AppLoader />}>
+                <App />
+              </React.Suspense>
+            </HashRouter>
+          </BrandingWithTenant>
+        </TenantProvider>
+      </AccessControlProvider>
+    </ErrorBoundary>
   </React.StrictMode>
 );

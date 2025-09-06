@@ -10,7 +10,7 @@ export default function ProtectedRoute() {
   const [hasSession, setHasSession] = useState<boolean>(false);
 
   // Public routes where we never force redirect to login
-  const publicPaths = ['/', '/menu', '/events', '/gallery', '/live-orders', '/contact', '/login', '/auth/callback'];
+  const publicPaths = ['/', '/menu', '/events', '/gallery', '/live-orders', '/contact', '/login', '/auth/callback', '/book-table'];
 
   useEffect(() => {
     let unsub = () => {};

@@ -1,5 +1,4 @@
 // src/pages/auth/Callback.tsx
-// src/pages/auth/Callback.tsx
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
@@ -38,6 +37,16 @@ export default function Callback() {
         const errCode = url.searchParams.get('error_code');
         const errDesc = url.searchParams.get('error_description');
 
+        // If Supabase returned an auth code (PKCE/magic link), exchange it for a session first
+        if (code) {
+          const { error: exchErr } = await supabase.auth.exchangeCodeForSession(code);
+          if (exchErr) {
+            setIsError(true);
+            setMsg(exchErr.message || 'Failed to complete sign-in.');
+            return;
+          }
+        }
+
         // If Supabase sent an error (e.g., otp_expired)
         if (err || errCode) {
           setIsError(true);
@@ -69,8 +78,9 @@ export default function Callback() {
         sessionStorage.removeItem('kaf_next');
         localStorage.removeItem('kaf_next');
 
-        // Clean URL and continue
-        window.history.replaceState({}, document.title, `${window.location.origin}/`);
+        // Clean the URL (remove code/error params) without leaving the current SPA context
+        const cleanUrl = `${window.location.origin}${window.location.pathname}`;
+        window.history.replaceState({}, document.title, cleanUrl);
         if (!cancelled) nav(nextTarget, { replace: true });
       } catch (err: any) {
         if (!cancelled) {

@@ -51,13 +51,13 @@ export async function buildApp(): Promise<FastifyInstance> {
 
   // Health
   app.get('/_health', async () => ({ ok: true }));
+  app.get('/', async () => ({ ok: true }));
 
   const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+  // HashRouter-friendly callback redirect: ensures SPA route is preserved
   app.get('/auth/callback', async (req, reply) => {
-    const qs = req.raw.url?.split('?')[1];
-    const redirectTo = qs
-      ? `${FRONTEND_URL}/auth/callback?${qs}`
-      : `${FRONTEND_URL}/auth/callback`;
+    const qs = req.raw.url?.split('?')[1] || '';
+    const redirectTo = `${FRONTEND_URL}/#/auth/callback${qs ? `?${qs}` : ''}`;
     return reply.redirect(307, redirectTo);
   });
 
@@ -89,7 +89,7 @@ export async function buildApp(): Promise<FastifyInstance> {
 
 // Start the server when run directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const port = Number(process.env.PORT || 8080);
+  const port = Number(process.env.PORT || 8089);
   const host = process.env.HOST || '0.0.0.0';
   buildApp()
     .then(app => app.listen({ port, host }))

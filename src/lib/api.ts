@@ -141,6 +141,26 @@ export interface MenuItem {
   updated_at?: string;
 }
 
+/* ---------- Tables (for reservations) ---------- */
+export interface DiningTable {
+  id: UUID;
+  code: string;            // e.g., T01, VIP2
+  label?: string | null;   // human-friendly label
+  seats: number;
+  status?: 'available' | 'reserved' | 'occupied' | 'blocked';
+  type?: 'standard' | 'window' | 'vip' | 'outdoor' | 'booth' | string;
+  notes?: string | null;   // special description to show in popup
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface TableSearchParams {
+  date: string;        // YYYY-MM-DD
+  time: string;        // HH:mm
+  guests: number;
+  preference?: string; // type or area hint
+}
+
 export type ReceiptChannel = "email" | "sms" | "whatsapp";
 
 export type PaymentProviderName = "stripe" | "razorpay" | "mock";
@@ -234,6 +254,36 @@ export function bulkImportMenuItems(payload:
     "/menu/bulk-import",
     { method: "POST", body: payload }
   );
+}
+
+/* ======================
+   Tables (Search & Details)
+====================== */
+
+/** Search tables for a given date/time and party size */
+export function searchTables(params: TableSearchParams) {
+  return request<DiningTable[]>('/tables/search', {
+    method: 'GET',
+    query: params as unknown as Record<string, unknown>,
+  });
+}
+/** Availability snapshot at a specific datetime (and optional party size) */
+export function getAvailableTables(params: { at: string; guests?: number }) {
+  return request<{
+    at: string;
+    guests?: number;
+    available: DiningTable[];
+    unavailable: DiningTable[];
+    nextAvailableAt?: string | null;
+  }>('/tables/available', {
+    method: 'GET',
+    query: params as unknown as Record<string, unknown>,
+  });
+}
+
+/** Fetch full details for a specific table (for popup with specialties) */
+export function getTableDetails(tableId: UUID) {
+  return request<DiningTable>(`/tables/${tableId}`, { method: 'GET' });
 }
 
 /* ======================
@@ -450,6 +500,9 @@ const api = {
   revenueTimeseries,
   paymentConversionFunnel,
   orderFulfillmentTimeline,
+  searchTables,
+  getAvailableTables,
+  getTableDetails,
   getErrorMessage,
 };
 

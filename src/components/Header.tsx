@@ -56,6 +56,7 @@ export default function Header() {
     { name: "Gallery", href: "/gallery" },
     { name: "Live Orders", href: "/live-orders" },
     { name: "Contact", href: "/contact" },
+    { name: "Book Table", href: "/book-table" },
   ];
 
   const isActive = (href: string) => location.pathname === href;
@@ -106,6 +107,11 @@ export default function Header() {
               <Link
                 key={item.name}
                 to={item.href}
+                onClick={() => {
+                  if (item.name === "Book Table") {
+                    navigate("/book-table");
+                  }
+                }}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive(item.href)
                     ? "text-orange-600 bg-orange-50"
@@ -161,7 +167,12 @@ export default function Header() {
                 <Link
                   key={item.name}
                   to={item.href}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    if (item.name === "Book Table") {
+                      navigate("/book-table");
+                    }
+                  }}
                   className={`block px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     isActive(item.href)
                       ? "text-orange-600 bg-orange-50"

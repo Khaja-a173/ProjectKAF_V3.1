@@ -3,6 +3,30 @@ import { apiFetch } from '@/lib/api';
 import { supabase } from '@/lib/supabase';
 import { User as AccessUser, Role, AccessPolicy, AccessAuditLog, DASHBOARD_REGISTRY, DEFAULT_ROLES } from '@/types/access';
 
+// --- ADD backward compatibility for legacy hooks ---
+export type AccessRole = { key: string; name: string; capabilities: string[] };
+export type AccessState = {
+  users: AccessUser[];
+  roles: AccessRole[];
+  auditLogs?: any[];
+  policy?: any;
+};
+
+// Module-scoped state + subscribers (safe shim for legacy hooks)
+let __accessState: AccessState = { users: [], roles: [], auditLogs: [], policy: null };
+const __accessSubs = new Set<(s: AccessState) => void>();
+
+export function updateGlobalAccess(
+  updater: (prev: any) => any
+) {
+  try {
+    __accessState = updater(__accessState);
+    __accessSubs.forEach((cb) => cb(__accessState));
+  } catch (e) {
+    console.error('[Access] updateGlobalAccess failed:', e);
+  }
+}
+
 interface AccessControlContextType {
   currentUser: AccessUser | null;
   setCurrentUser: (user: AccessUser | null) => void;
@@ -107,17 +131,23 @@ export function AccessControlProvider({ children }: AccessControlProviderProps) 
       try {
         setLoading(true);
         setError(null);
+        console.log('🔍 AccessControlProvider: Initializing...');
 
         // Ensure we have a Supabase session first
         const { data: sessionData } = await supabase.auth.getSession();
+        console.log('🔍 AccessControlProvider: Session check complete', !!sessionData.session);
+        
         if (!sessionData.session) {
+          console.log('✅ AccessControlProvider: No session - proceeding as anonymous user');
           setCurrentUser(null);
           if (!cancelled) setLoading(false);
           return;
         }
 
         // Fetch server-side identity + memberships
+        console.log('🔍 AccessControlProvider: Fetching whoami...');
         const who = await apiFetch('/auth/whoami');
+        console.log('✅ AccessControlProvider: WhoAmI response received');
         const mapped = toAccessUser(who as WhoAmI);
         setCurrentUser(mapped);
 
@@ -135,11 +165,17 @@ export function AccessControlProvider({ children }: AccessControlProviderProps) 
           createdAt: new Date(),
         } as AccessPolicy;
         setPolicy(syntheticPolicy);
+        console.log('✅ AccessControlProvider: Initialization complete');
       } catch (e: any) {
+        console.error('❌ AccessControlProvider: Initialization failed', e);
         setError(e?.message ?? 'Failed to initialize access control');
         setCurrentUser(null);
+        // Don't block the app if auth fails - continue with null user
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+          console.log('✅ AccessControlProvider: Loading complete');
+        }
       }
     })();
 
@@ -231,7 +267,16 @@ export function AccessControlProvider({ children }: AccessControlProviderProps) 
         switchUser,
       }}
     >
-      {children}
+      {loading ? (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading ProjectKAF...</p>
+          </div>
+        </div>
+      ) : (
+        children
+      )}
     </AccessControlContext.Provider>
   );
 }

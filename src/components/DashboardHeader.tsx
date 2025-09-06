@@ -12,6 +12,12 @@ import {
   LogOut,
 } from "lucide-react";
 
+export type DashboardHeaderProps = {
+  title?: string;
+  subtitle?: string;
+  showUserSwitcher?: boolean;
+};
+
 /**
  * Admin Dashboard Header
  * - Same visual style as main Header (keeps logo + name)
@@ -21,7 +27,11 @@ import {
  * - Logo click → Home (/)
  * - Logout → sign out, then go Home (/)
  */
-export default function DashboardHeader() {
+const DashboardHeader: React.FC<DashboardHeaderProps> = ({
+  title,
+  subtitle,
+  showUserSwitcher = false,
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -193,9 +203,9 @@ export default function DashboardHeader() {
             )}
             <div className="text-left">
               {/* Keep the same branding name as main header */}
-              <h1 className="text-xl font-bold text-gray-900">Bella Vista</h1>
+              <h1 className="text-xl font-bold text-gray-900">{title || "Bella Vista"}</h1>
               {/* Dynamic title under the name */}
-              <p className="text-xs text-gray-500">{pageTitle}</p>
+              <p className="text-xs text-gray-500">{subtitle || pageTitle}</p>
             </div>
           </button>
 
@@ -222,4 +232,6 @@ export default function DashboardHeader() {
       </div>
     </header>
   );
-}
+};
+
+export default DashboardHeader;

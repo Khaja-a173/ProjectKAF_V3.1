@@ -83,7 +83,7 @@ export default function BookTable() {
       const scannedTable = `T${String(Math.floor(Math.random() * 20) + 1).padStart(2, '0')}`;
       setTableNumber(scannedTable);
       // Immediately redirect to menu with QR scan indicator
-      window.location.href = `/menu?table=${scannedTable}&source=qr`;
+      navigate(`/menu?table=${scannedTable}&source=qr`);
     }, 2000);
   };
 
@@ -91,7 +91,7 @@ export default function BookTable() {
     setSelectedTable(tableId);
     setTableNumber(tableId);
     // Immediately redirect to menu with layout selection indicator
-    window.location.href = `/menu?table=${tableId}&source=layout`;
+    navigate(`/menu?table=${tableId}&source=layout`);
   };
 
   const handleCreateSession = async (tableId: string) => {
@@ -103,7 +103,7 @@ export default function BookTable() {
       if (existingSession) {
         console.log("♻️ Using existing session for table:", tableId);
         // Redirect to menu page immediately
-        window.location.href = `/menu?table=${tableId}&session=${existingSession.id}`;
+        navigate(`/menu?table=${tableId}&session=${existingSession.id}`);
         return;
       }
 
@@ -117,7 +117,7 @@ export default function BookTable() {
 
       console.log("✅ Session created, navigating to menu");
       // Redirect to menu page immediately
-      window.location.href = `/menu?table=${tableId}&session=${session.id}`;
+      navigate(`/menu?table=${tableId}&session=${session.id}`);
     } catch (err) {
       console.error("❌ Failed to create session:", err);
       alert(

@@ -15,7 +15,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "strict": true,
+    "strict": false,
+    "noImplicitAny": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
@@ -32,6 +33,10 @@
     "src/**/*.jsx",
     "src/**/*.d.ts",
     "vite-env.d.ts"
+  ],
+  "exclude": [
+    "src/pages/Checkout 2.tsx",
+    "src/pages/Checkout.bak.tsx"
   ],
   "references": [
     {

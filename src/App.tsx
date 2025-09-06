@@ -1,5 +1,5 @@
 // src/App.tsx
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from '@/pages/Login';
 import Callback from '@/pages/auth/Callback';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -23,42 +23,52 @@ import Events from '@/pages/Events';
 import Gallery from '@/pages/Gallery';
 import LiveOrders from '@/pages/LiveOrders';
 import Contact from '@/pages/Contact';
+import BookTable from '@/pages/BookTable';
+import Reserve from '@/pages/Reserve';
+import Header from '@/components/Header';
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/auth/callback" element={<Callback />} />
+    <Routes>
+      {/* Public */}
+      <Route
+        path="/login"
+        element={
+          <>
+            <Header />
+            <Login />
+          </>
+        }
+      />
+      <Route path="/auth/callback" element={<Callback />} />
 
-        {/* Public site pages (main header navigation targets) */}
-        <Route path="/" element={<Home />} />
-        <Route path="/menu" element={<Menu />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/live-orders" element={<LiveOrders />} />
-        <Route path="/contact" element={<Contact />} />
+      {/* Public site pages (main header navigation targets) */}
+      <Route path="/" element={<Home />} />
+      <Route path="/menu" element={<Menu />} />
+      <Route path="/events" element={<Events />} />
+      <Route path="/gallery" element={<Gallery />} />
+      <Route path="/live-orders" element={<LiveOrders />} />
+      <Route path="/book-table" element={<BookTable />} />
+      <Route path="/reserve" element={<Reserve />} />
+      <Route path="/contact" element={<Contact />} />
 
-        {/* Protected */}
-        <Route element={<ProtectedRoute />}>
-          <Route element={<DashboardLayout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/menu-management" element={<MenuManagement />} />
-            <Route path="/orders" element={<OrderManagement />} />
-            <Route path="/table-management" element={<TableManagement />} />
-            <Route path="/staff" element={<StaffManagement />} />
-            <Route path="/kds" element={<KDS />} />
-            <Route path="/branding" element={<Branding />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/payments" element={<AdminPayments />} />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          </Route>
+      {/* Protected */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/menu-management" element={<MenuManagement />} />
+          <Route path="/orders" element={<OrderManagement />} />
+          <Route path="/table-management" element={<TableManagement />} />
+          <Route path="/staff" element={<StaffManagement />} />
+          <Route path="/kds" element={<KDS />} />
+          <Route path="/branding" element={<Branding />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/payments" element={<AdminPayments />} />
         </Route>
+      </Route>
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </BrowserRouter>
+      {/* Fallback */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }

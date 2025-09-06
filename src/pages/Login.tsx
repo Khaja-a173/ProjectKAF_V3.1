@@ -45,6 +45,17 @@ export default function Login() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        nav(postLoginTarget, { replace: true });
+      }
+    });
+    return () => {
+      sub.subscription.unsubscribe();
+    };
+  }, [nav, postLoginTarget]);
+
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       <section className="hidden lg:flex items-center justify-center bg-gradient-to-br from-indigo-600 to-blue-600 text-white p-10">
